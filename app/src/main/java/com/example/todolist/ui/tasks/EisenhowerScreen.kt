@@ -1,11 +1,21 @@
 // app/src/main/java/com/example/todolist/ui/tasks/EisenhowerScreen.kt
 package com.example.todolist.ui.tasks
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -14,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.todolist.GreetingImage
 import com.example.todolist.TodoApplication
+import com.example.todolist.ui.components.MyAppBar
 import com.example.todolist.ui.components.Quadrant
 import com.example.todolist.ui.viewmodels.TaskViewModel
 import com.example.todolist.ui.viewmodels.TaskViewModelFactory
@@ -26,11 +37,11 @@ fun EisenhowerScreen(
 ) {
 
     Scaffold(
-        floatingActionButton = {
-            FloatingActionButton(onClick = onAddTask) {
-                Icon(Icons.Default.Add, contentDescription = "Add Task")
-            }
-        }
+//        floatingActionButton = {
+//            FloatingActionButton(onClick = onAddTask) {
+//                Icon(Icons.Default.Add, contentDescription = "Add Task")
+//            }
+//        }
     ) { padding ->
         GreetingImage()
         Column(
@@ -47,11 +58,9 @@ fun EisenhowerScreen(
                     .padding(16.dp)
                     .align(Alignment.CenterHorizontally),
                 color = Color.White
-
             )
-
-
             // Matrix Grid
+
             Column(modifier = Modifier.fillMaxSize()) {
                 // Row 1: Quadrant 1 and 2
                 Row(modifier = Modifier.weight(1f)) {
@@ -121,7 +130,10 @@ fun EisenhowerScreen(
 
                     )
                 }
+                MyAppBar(onButton1Click = onAddTask)
+
             }
+
         }
     }
 }
