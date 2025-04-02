@@ -32,7 +32,7 @@ fun TaskCard(
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .padding(8.dp),
+            .padding(10.dp),
         elevation = CardDefaults.cardElevation(4.dp)
     ) {
         Column(

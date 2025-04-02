@@ -1,4 +1,3 @@
-// app/src/main/java/com/example/todolist/TodoApplication.kt
 package com.example.todolist
 
 import android.app.Application

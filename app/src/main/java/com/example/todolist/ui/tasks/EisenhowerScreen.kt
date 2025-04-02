@@ -8,9 +8,11 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.todolist.GreetingImage
 import com.example.todolist.TodoApplication
 import com.example.todolist.ui.components.Quadrant
 import com.example.todolist.ui.viewmodels.TaskViewModel
@@ -22,6 +24,7 @@ fun EisenhowerScreen(
     modifier: Modifier = Modifier,
     viewModel: TaskViewModel = getTaskViewModel()
 ) {
+
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(onClick = onAddTask) {
@@ -29,19 +32,24 @@ fun EisenhowerScreen(
             }
         }
     ) { padding ->
+        GreetingImage()
         Column(
             modifier = modifier
                 .fillMaxSize()
                 .padding(padding)
         ) {
+
             Text(
                 text = "Eisenhower Matrix",
                 style = MaterialTheme.typography.headlineMedium,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp)
-                    .align(Alignment.CenterHorizontally)
+                    .align(Alignment.CenterHorizontally),
+                color = Color.White
+
             )
+
 
             // Matrix Grid
             Column(modifier = Modifier.fillMaxSize()) {
@@ -58,7 +66,8 @@ fun EisenhowerScreen(
                         onDeleteTask = { task ->
                             viewModel.deleteTask(task)
                         },
-                        modifier = Modifier.weight(1f)
+                        modifier = Modifier.weight(1f),
+                        backgroundColor = Color(0xFF3D6CB9)
                     )
 
                     // Quadrant 2: Not Urgent & Important
@@ -72,7 +81,9 @@ fun EisenhowerScreen(
                         onDeleteTask = { task ->
                             viewModel.deleteTask(task)
                         },
-                        modifier = Modifier.weight(1f)
+                        modifier = Modifier.weight(1f),
+                        backgroundColor = Color(0xFF00D1FF)
+
                     )
                 }
 
@@ -89,7 +100,9 @@ fun EisenhowerScreen(
                         onDeleteTask = { task ->
                             viewModel.deleteTask(task)
                         },
-                        modifier = Modifier.weight(1f)
+                        modifier = Modifier.weight(1f),
+                        backgroundColor = Color(0xFF00FFF0)
+
                     )
 
                     // Quadrant 4: Not Urgent & Not Important
@@ -103,7 +116,9 @@ fun EisenhowerScreen(
                         onDeleteTask = { task ->
                             viewModel.deleteTask(task)
                         },
-                        modifier = Modifier.weight(1f)
+                        modifier = Modifier.weight(1f),
+                        backgroundColor = Color(0xFFFAFAF6)
+
                     )
                 }
             }
