@@ -1,35 +1,27 @@
+// app/src/main/java/com/example/todolist/ui/tasks/EisenhowerScreen.kt
 package com.example.todolist.ui.tasks
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import com.example.todolist.data.TaskRepository
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.todolist.TodoApplication
 import com.example.todolist.ui.components.Quadrant
+import com.example.todolist.ui.viewmodels.TaskViewModel
+import com.example.todolist.ui.viewmodels.TaskViewModelFactory
 
-// ui/tasks/EisenhowerScreen.kt
 @Composable
 fun EisenhowerScreen(
     onAddTask: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: TaskViewModel = getTaskViewModel()
 ) {
-    val tasks by remember { mutableStateOf(TaskRepository.tasks) }
-
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(onClick = onAddTask) {
@@ -56,27 +48,29 @@ fun EisenhowerScreen(
                 // Row 1: Quadrant 1 and 2
                 Row(modifier = Modifier.weight(1f)) {
                     // Quadrant 1: Urgent & Important
+                    val q1Tasks by viewModel.quadrant1Tasks.collectAsState(initial = emptyList())
                     Quadrant(
                         title = "Do First",
-                        tasks = TaskRepository.getTasksByQuadrant(1),
+                        tasks = q1Tasks,
                         onTaskChecked = { task, checked ->
-                            TaskRepository.updateTask(task.copy(isCompleted = checked))
+                            viewModel.updateTask(task.copy(isCompleted = checked))
                         },
                         onDeleteTask = { task ->
-                            TaskRepository.deleteTask(task)
+                            viewModel.deleteTask(task)
                         },
                         modifier = Modifier.weight(1f)
                     )
 
                     // Quadrant 2: Not Urgent & Important
+                    val q2Tasks by viewModel.quadrant2Tasks.collectAsState(initial = emptyList())
                     Quadrant(
                         title = "Schedule",
-                        tasks = TaskRepository.getTasksByQuadrant(2),
+                        tasks = q2Tasks,
                         onTaskChecked = { task, checked ->
-                            TaskRepository.updateTask(task.copy(isCompleted = checked))
+                            viewModel.updateTask(task.copy(isCompleted = checked))
                         },
                         onDeleteTask = { task ->
-                            TaskRepository.deleteTask(task)
+                            viewModel.deleteTask(task)
                         },
                         modifier = Modifier.weight(1f)
                     )
@@ -85,27 +79,29 @@ fun EisenhowerScreen(
                 // Row 2: Quadrant 3 and 4
                 Row(modifier = Modifier.weight(1f)) {
                     // Quadrant 3: Urgent & Not Important
+                    val q3Tasks by viewModel.quadrant3Tasks.collectAsState(initial = emptyList())
                     Quadrant(
                         title = "Delegate",
-                        tasks = TaskRepository.getTasksByQuadrant(3),
+                        tasks = q3Tasks,
                         onTaskChecked = { task, checked ->
-                            TaskRepository.updateTask(task.copy(isCompleted = checked))
+                            viewModel.updateTask(task.copy(isCompleted = checked))
                         },
                         onDeleteTask = { task ->
-                            TaskRepository.deleteTask(task)
+                            viewModel.deleteTask(task)
                         },
                         modifier = Modifier.weight(1f)
                     )
 
                     // Quadrant 4: Not Urgent & Not Important
+                    val q4Tasks by viewModel.quadrant4Tasks.collectAsState(initial = emptyList())
                     Quadrant(
                         title = "Don't Do",
-                        tasks = TaskRepository.getTasksByQuadrant(4),
+                        tasks = q4Tasks,
                         onTaskChecked = { task, checked ->
-                            TaskRepository.updateTask(task.copy(isCompleted = checked))
+                            viewModel.updateTask(task.copy(isCompleted = checked))
                         },
                         onDeleteTask = { task ->
-                            TaskRepository.deleteTask(task)
+                            viewModel.deleteTask(task)
                         },
                         modifier = Modifier.weight(1f)
                     )
@@ -113,4 +109,13 @@ fun EisenhowerScreen(
             }
         }
     }
+}
+
+@Composable
+fun getTaskViewModel(): TaskViewModel {
+    val context = LocalContext.current
+    val application = context.applicationContext as TodoApplication
+    return viewModel(
+        factory = TaskViewModelFactory(application.repository)
+    )
 }

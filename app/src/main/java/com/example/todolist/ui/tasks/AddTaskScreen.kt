@@ -1,3 +1,4 @@
+// app/src/main/java/com/example/todolist/ui/tasks/AddTaskScreen.kt
 package com.example.todolist.ui.tasks
 
 import androidx.compose.foundation.layout.*
@@ -7,15 +8,18 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.todolist.data.Task
-import com.example.todolist.data.TaskRepository
+import com.example.todolist.ui.viewmodels.TaskViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddTaskScreen(
     onBack: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: TaskViewModel = getTaskViewModel()
 ) {
     var title by remember { mutableStateOf("") }
     var description by remember { mutableStateOf("") }
@@ -90,7 +94,7 @@ fun AddTaskScreen(
                     checked = isUrgent,
                     onCheckedChange = { isUrgent = it }
                 )
-            } // <-- FIX: Closing brace moved here
+            }
 
             Spacer(modifier = Modifier.height(32.dp))
 
@@ -103,7 +107,7 @@ fun AddTaskScreen(
                             isImportant = isImportant,
                             isUrgent = isUrgent
                         )
-                        TaskRepository.addTask(task)
+                        viewModel.addTask(task)
                         onBack()
                     }
                 },

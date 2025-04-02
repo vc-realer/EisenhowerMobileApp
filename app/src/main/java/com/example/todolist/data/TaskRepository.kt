@@ -1,25 +1,24 @@
+// app/src/main/java/com/example/todolist/data/TaskRepository.kt
 package com.example.todolist.data
 
-object TaskRepository {
-    private val _tasks = mutableListOf<Task>()
-    val tasks: List<Task> get() = _tasks
+import kotlinx.coroutines.flow.Flow
 
-    fun addTask(task: Task) {
-        _tasks.add(task)
+class TaskRepository(private val taskDao: TaskDao) {
+    val allTasks: Flow<List<Task>> = taskDao.getAllTasks()
+    val quadrant1Tasks: Flow<List<Task>> = taskDao.getQuadrant1Tasks()
+    val quadrant2Tasks: Flow<List<Task>> = taskDao.getQuadrant2Tasks()
+    val quadrant3Tasks: Flow<List<Task>> = taskDao.getQuadrant3Tasks()
+    val quadrant4Tasks: Flow<List<Task>> = taskDao.getQuadrant4Tasks()
+
+    suspend fun addTask(task: Task) {
+        taskDao.insertTask(task)
     }
 
-    fun updateTask(task: Task) {
-        val index = _tasks.indexOfFirst { it.id == task.id }
-        if (index != -1) {
-            _tasks[index] = task
-        }
+    suspend fun updateTask(task: Task) {
+        taskDao.updateTask(task)
     }
 
-    fun deleteTask(task: Task) {
-        _tasks.remove(task)
-    }
-
-    fun getTasksByQuadrant(quadrant: Int): List<Task> {
-        return _tasks.filter { it.quadrant() == quadrant }
+    suspend fun deleteTask(task: Task) {
+        taskDao.deleteTask(task)
     }
 }
